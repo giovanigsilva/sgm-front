@@ -1,18 +1,12 @@
-# Usando Node 24.6.0
 FROM node:24.6.0
 
-# Diretório de trabalho
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copiar dependências
 COPY package*.json ./
-RUN npm install --production
+RUN npm install
 
-# Copiar código
 COPY . .
 
-# Expor porta do backend
-EXPOSE 3000
+EXPOSE 5173
 
-# Comando para rodar
-CMD ["node", "app.js"]
+CMD ["npm", "run", "dev", "--", "--host"]
