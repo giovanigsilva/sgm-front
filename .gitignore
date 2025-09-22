@@ -1,4 +1,6 @@
+# =========================
 # Logs
+# =========================
 logs
 *.log
 npm-debug.log*
@@ -7,12 +9,20 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# =========================
+# Node / React
+# =========================
+node_modules/
+dist/
+dist-ssr/
+.vite/
 *.local
+.cache/
+.env
 
+# =========================
 # Editor directories and files
+# =========================
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,3 +32,53 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# =========================
+# Visual Studio / .NET
+# =========================
+*.rsuser
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+*.dll
+*.exe
+*.pdb
+
+# VS files
+.vs/
+Generated\ Files/
+TestResult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.VisualState.xml
+nunit-*.xml
+*.coverage
+*.coveragexml
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+# Others
+*.dbmdl
+*.bak
+*.mdf
+*.ldf
+
+# Publish / deploy
+publish/
+*.pubxml
+*.publishproj
