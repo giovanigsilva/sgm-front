@@ -1,19 +1,18 @@
-# Use Node.js v24
-FROM node:24
+# Usando Node 24.6.0
+FROM node:24.6.0
 
-# Create app directory
+# Diretório de trabalho
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# Copiar dependências
 COPY package*.json ./
+RUN npm install --production
 
-RUN npm install
-
-# Bundle app source
+# Copiar código
 COPY . .
 
-# Expose the port
+# Expor porta do backend
 EXPOSE 3000
 
-CMD [ "node", "app.js" ]
+# Comando para rodar
+CMD ["node", "app.js"]
