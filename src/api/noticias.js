@@ -1,4 +1,4 @@
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://cnx-app-cadu-gev.azurewebsites.net/api/";
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://cnx-app-cadu-gev.azurewebsites.net/api";
 
 function authHeaderJson() {
   const token = localStorage.getItem("token");
@@ -10,7 +10,7 @@ function authHeaderJson() {
 
 export async function getNoticias() {
   try {
-    const res = await fetch(`${apiBaseUrl}/api/Noticias`, { headers: authHeaderJson() });
+    const res = await fetch(`${apiBaseUrl}/noticias`, { headers: authHeaderJson() });
     if (!res.ok) throw new Error("Falha ao listar notícias");
     return res.json();
   } catch (error) {
@@ -20,7 +20,7 @@ export async function getNoticias() {
 
 export async function getNoticia(id) {
   try {
-    const res = await fetch(`${apiBaseUrl}/api/Noticias/${id}`, { headers: authHeaderJson() });
+    const res = await fetch(`${apiBaseUrl}/noticias/${id}`, { headers: authHeaderJson() });
     if (!res.ok) {
       const msg = await res.text().catch(() => "");
       throw new Error(msg || "Falha ao carregar notícia");
@@ -33,7 +33,7 @@ export async function getNoticia(id) {
 
 export async function deleteNoticia(id) {
   try {
-    const res = await fetch(`${apiBaseUrl}/api/Noticias/${id}`, {
+    const res = await fetch(`${apiBaseUrl}/noticias/${id}`, {
       method: "DELETE",
       headers: authHeaderJson(),
     });
@@ -46,7 +46,7 @@ export async function deleteNoticia(id) {
 
 export async function createNoticia(payload) {
   try {
-    const res = await fetch(`${apiBaseUrl}/api/Noticias`, {
+    const res = await fetch(`${apiBaseUrl}/noticias`, {
       method: "POST",
       headers: authHeaderJson(),
       body: JSON.stringify(payload), // { titulo, conteudo, categoria, usuarioId, caminhoFoto? }
@@ -79,10 +79,10 @@ export async function updateNoticia(id, payload) {
     }
   };
 
-  let res = await tryPut(`${apiBaseUrl}/api/Noticias/${id}`);
+  let res = await tryPut(`${apiBaseUrl}/noticias/${id}`);
 
   if (res.status === 405) {
-    res = await tryPut(`${apiBaseUrl}/api/Noticias`);
+    res = await tryPut(`${apiBaseUrl}/noticias`);
   }
 
   if (!res.ok) {
@@ -97,7 +97,7 @@ export async function updateNoticia(id, payload) {
 
 export async function getNoticiasUltimos7Dias() {
   try {
-    const res = await fetch(`${apiBaseUrl}noticias/estatisticas/ultimos7dias`, {
+    const res = await fetch(`${apiBaseUrl}/noticias/estatisticas/ultimos7dias`, {
       headers: authHeaderJson(),
     });
     if (!res.ok) throw new Error("Falha ao buscar estatísticas de notícias");
