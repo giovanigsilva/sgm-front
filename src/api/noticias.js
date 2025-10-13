@@ -1,4 +1,4 @@
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://cnx-app-cadu-gev.azurewebsites.net";
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://cnx-app-cadu-gev.azurewebsites.net";
 
 function authHeaderJson() {
   const token = localStorage.getItem("token");

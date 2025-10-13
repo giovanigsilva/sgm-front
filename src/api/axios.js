@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://cnx-app-cadu-gev.azurewebsites.net/",
+  baseURL: import.meta.env.VITE_API_URL || "https://cnx-app-cadu-gev.azurewebsites.net/",
 });
 
 api.interceptors.request.use((config) => {
