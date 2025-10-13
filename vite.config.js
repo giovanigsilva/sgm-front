@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     allowedHosts: [
-      'testedeploy-tasuihck.b4a.run', // 🔹 adicione seu host aqui
+      'http://cnx-app-cadu-gev.azurewebsites.net', // 🔹 adicione seu host aqui
     ],
     host: true, // permite conexões externas
     port: 5173, // opcional, default do vite
