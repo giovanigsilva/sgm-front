@@ -97,7 +97,7 @@ export async function updateNoticia(id, payload) {
 
 export async function getNoticiasUltimos7Dias() {
   try {
-    const res = await fetch(`${apiBaseUrl}/api/Noticias/estatisticas/ultimos7dias`, {
+    const res = await fetch(`${apiBaseUrl}noticias/estatisticas/ultimos7dias`, {
       headers: authHeaderJson(),
     });
     if (!res.ok) throw new Error("Falha ao buscar estatísticas de notícias");

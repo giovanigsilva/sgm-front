@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://localhost:7258";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://cnx-app-cadu-gev.azurewebsites.net/api/";
 
 async function fetchNoticiasPublicas({ page = 1, pageSize = 12, q = "", categoria = "" }) {
   const qs = new URLSearchParams();
