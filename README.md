@@ -145,7 +145,7 @@ import NoticiasPublicas from "../pages/Public/NoticiasPublicas";
 
 * Mostra gráfico com total de notícias publicadas por dia nos **últimos 7 dias**
 * Baseado em `Recharts`
-* Endpoint consumido: `GET /api/Noticias/estatisticas/ultimos7dias`
+* Endpoint consumido: `GET noticias/estatisticas/ultimos7dias`
 
 ---
 

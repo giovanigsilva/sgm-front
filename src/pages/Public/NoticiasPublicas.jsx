@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://cnx-app-cadu-gev.azurewebsites.net/api/";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://cnx-app-cadu-gev.azurewebsites.net/api";
 
 async function fetchNoticiasPublicas({ page = 1, pageSize = 12, q = "", categoria = "" }) {
   const qs = new URLSearchParams();
@@ -10,7 +10,7 @@ async function fetchNoticiasPublicas({ page = 1, pageSize = 12, q = "", categori
   qs.set("pageSize", String(pageSize));
   if (q) qs.set("q", q);
   if (categoria) qs.set("categoria", categoria);
-  const res = await fetch(`${API_BASE}/api/Noticias?${qs.toString()}`, {
+  const res = await fetch(`${API_BASE}/noticias?${qs.toString()}`, {
     headers: { "Content-Type": "application/json" },
   });
   if (!res.ok) throw new Error("Falha ao carregar notícias");
