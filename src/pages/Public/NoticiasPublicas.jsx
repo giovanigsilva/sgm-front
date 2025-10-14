@@ -272,7 +272,7 @@ export default function NoticiasPublicas() {
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 lg:px-8">
       <header className="flex flex-col gap-6 rounded-3xl bg-white/90 p-6 shadow-sm backdrop-blur">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Notícias</h1>
+          <h1 className="text-3xl font-bold text-slate-900">Portal de Notícias da Prefeitura de Juiz de Fora</h1>
           <p className="mt-2 text-sm text-slate-600">
             Fique por dentro das novidades do município em todas as áreas.
           </p>
