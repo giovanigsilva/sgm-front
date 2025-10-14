@@ -236,21 +236,25 @@ export default function NoticiasPublicas() {
     return [
       {
         name: "WhatsApp",
+        type: "whatsapp",
         href: `https://api.whatsapp.com/send?text=${whatsappText}`,
         className: "bg-emerald-500 hover:bg-emerald-600",
       },
       {
         name: "Facebook",
+        type: "facebook",
         href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
         className: "bg-blue-600 hover:bg-blue-700",
       },
       {
         name: "X (Twitter)",
+        type: "x",
         href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`,
         className: "bg-slate-900 hover:bg-black",
       },
       {
         name: "LinkedIn",
+        type: "linkedin",
         href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}&title=${encodedTitle}`,
         className: "bg-sky-700 hover:bg-sky-800",
       },
@@ -557,9 +561,11 @@ export default function NoticiasPublicas() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold text-white transition focus:outline-none focus:ring-2 focus:ring-offset-2 ${link.className}`}
+                        aria-label={link.name}
+                        className={`inline-flex h-10 w-10 items-center justify-center rounded-full text-white transition focus:outline-none focus:ring-2 focus:ring-offset-2 ${link.className}`}
                       >
-                        {link.name}
+                        <ShareIcon type={link.type} />
+                        <span className="sr-only">{link.name}</span>
                       </a>
                     ))}
                   </div>
