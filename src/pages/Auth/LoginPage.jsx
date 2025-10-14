@@ -4,6 +4,17 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+const SHOULD_FAKE_VALIDATION = String(import.meta.env.VITE_FAKE_RECAPTCHA_VALIDATION).toLowerCase() === "true";
+
+async function fakeValidateRecaptcha(token) {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  if (!token || token.length < 10) {
+    const error = new Error("Token reCAPTCHA inválido (simulação).");
+    error.name = "FakeRecaptchaError";
+    throw error;
+  }
+  return { success: true, score: 0.92 };
+}
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -83,9 +94,15 @@ export default function LoginPage() {
         if (!grecaptcha || !captchaReady) {
           throw new Error("Não foi possível validar o reCAPTCHA. Atualize a página e tente novamente.");
         }
-        setCaptchaStatus("Validando reCAPTCHA...");
+        setCaptchaStatus(SHOULD_FAKE_VALIDATION ? "Simulando envio do reCAPTCHA..." : "Validando reCAPTCHA...");
         captchaToken = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "login" });
-        setCaptchaStatus("Proteção reCAPTCHA validada.");
+        if (SHOULD_FAKE_VALIDATION) {
+          setCaptchaStatus("Verificando resposta do reCAPTCHA (simulação)...");
+          await fakeValidateRecaptcha(captchaToken);
+          setCaptchaStatus("Proteção reCAPTCHA validada (simulação).");
+        } else {
+          setCaptchaStatus("Proteção reCAPTCHA validada.");
+        }
       }
 
       await login({ email, senha, captchaToken });
@@ -95,7 +112,11 @@ export default function LoginPage() {
         error?.response?.data?.message || error?.message || "Falha no login";
       setErr(message);
       if (RECAPTCHA_SITE_KEY) {
-        setCaptchaStatus("Não foi possível validar o reCAPTCHA.");
+        setCaptchaStatus(
+          SHOULD_FAKE_VALIDATION
+            ? "Falha na validação simulada do reCAPTCHA."
+            : "Não foi possível validar o reCAPTCHA."
+        );
       }
     } finally {
       setLoading(false);
