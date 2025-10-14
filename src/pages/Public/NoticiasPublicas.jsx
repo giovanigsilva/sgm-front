@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://cnx-app-cadu-gev.azurewebsites.net";
 
@@ -351,11 +351,19 @@ export default function NoticiasPublicas() {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 lg:px-8">
       <header className="flex flex-col gap-6 rounded-3xl bg-white/90 p-6 shadow-sm backdrop-blur">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Portal de Notícias da Prefeitura de Juiz de Fora</h1>
-          <p className="mt-2 text-sm text-slate-600">
-            Fique por dentro das novidades do município em todas as áreas.
-          </p>
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900">Portal de Notícias da Prefeitura de Juiz de Fora</h1>
+            <p className="mt-2 text-sm text-slate-600">
+              Fique por dentro das novidades do município em todas as áreas.
+            </p>
+          </div>
+          <Link
+            to="/login?redirect=/noticias"
+            className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-1"
+          >
+            Gerenciar notícias
+          </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-[2fr,1fr,auto]">
           <input
