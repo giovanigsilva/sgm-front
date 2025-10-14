@@ -213,6 +213,50 @@ export default function NoticiasPublicas() {
   }, [filtered, page, pageSize]);
   const gridItemsLength = gridItems.length;
 
+  const shareLinks = useMemo(() => {
+    if (!modalItem) return [];
+    if (typeof window === "undefined") return [];
+
+    const { origin, pathname, search } = window.location;
+    const params = new URLSearchParams(search);
+    const itemId = modalItem.id ?? modalItem.slug ?? modalItem.titulo ?? "";
+    if (itemId) params.set("noticia", String(itemId));
+    const query = params.toString();
+    const baseUrl = `${origin}${pathname}`;
+    const shareUrl = query ? `${baseUrl}?${query}` : baseUrl;
+    const title = (modalItem.titulo ?? "Confira esta notícia").trim();
+    const description = (modalItem.resumo ?? modalItem.conteudo ?? "").trim();
+    const shortDescription = description.length > 140 ? `${description.slice(0, 137)}...` : description;
+
+    const encodedUrl = encodeURIComponent(shareUrl);
+    const encodedTitle = encodeURIComponent(title);
+    const encodedText = encodeURIComponent(shortDescription || title);
+    const whatsappText = encodeURIComponent(`${title}\n${shareUrl}`);
+
+    return [
+      {
+        name: "WhatsApp",
+        href: `https://api.whatsapp.com/send?text=${whatsappText}`,
+        className: "bg-emerald-500 hover:bg-emerald-600",
+      },
+      {
+        name: "Facebook",
+        href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+        className: "bg-blue-600 hover:bg-blue-700",
+      },
+      {
+        name: "X (Twitter)",
+        href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`,
+        className: "bg-slate-900 hover:bg-black",
+      },
+      {
+        name: "LinkedIn",
+        href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}&title=${encodedTitle}`,
+        className: "bg-sky-700 hover:bg-sky-800",
+      },
+    ];
+  }, [modalItem]);
+
   const onChangeCategoria = (event) => {
     const value = event.target.value;
     setCategoria(value);
@@ -501,6 +545,26 @@ export default function NoticiasPublicas() {
               <time className="mt-1 block text-sm text-slate-500">
                 {formatDate(modalItem.criadoEm)}
               </time>
+              {shareLinks.length > 0 && (
+                <div className="mt-5 border-t border-slate-200 pt-5">
+                  <span className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+                    Compartilhar
+                  </span>
+                  <div className="mt-3 flex flex-wrap gap-3">
+                    {shareLinks.map((link) => (
+                      <a
+                        key={link.name}
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold text-white transition focus:outline-none focus:ring-2 focus:ring-offset-2 ${link.className}`}
+                      >
+                        {link.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div className="mt-6 space-y-4 text-sm leading-relaxed text-slate-700">
                 {(modalItem.conteudo ?? "").split(/\n{2,}/).map((paragraph, index) => (
                   <p key={index} className="whitespace-pre-line">
