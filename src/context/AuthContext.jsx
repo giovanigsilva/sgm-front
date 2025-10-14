@@ -78,8 +78,8 @@ export const AuthProvider = ({ children }) => {
   }, [token, user]);
 
   // Faz login e popula token + user (prioriza campos vindos da API)
-  const login = async ({ email, senha }) => {
-    const res = await loginRequest(email, senha);
+  const login = async ({ email, senha, captchaToken }) => {
+    const res = await loginRequest(email, senha, captchaToken);
     // Esperado: { usuario, email, usuarioId?, role?, token }
     const p = parseJwt(res.token);
 
