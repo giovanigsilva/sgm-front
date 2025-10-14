@@ -15,6 +15,9 @@ export default function LoginPage() {
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
   const [captchaReady, setCaptchaReady] = useState(() => !RECAPTCHA_SITE_KEY);
+  const [captchaStatus, setCaptchaStatus] = useState(() =>
+    RECAPTCHA_SITE_KEY ? "Carregando proteção reCAPTCHA..." : null
+  );
 
   const redirectTo = (() => {
     const raw = searchParams.get("redirect");
@@ -32,7 +35,10 @@ export default function LoginPage() {
     const existing = document.querySelector("script[data-recaptcha-v3]");
     if (existing) {
       if (window.grecaptcha) {
-        window.grecaptcha.ready(() => setCaptchaReady(true));
+        window.grecaptcha.ready(() => {
+          setCaptchaReady(true);
+          setCaptchaStatus("Proteção reCAPTCHA carregada.");
+        });
       }
       return;
     }
@@ -43,10 +49,14 @@ export default function LoginPage() {
     script.defer = true;
     script.dataset.recaptchaV3 = "true";
     script.onload = () => {
-      window.grecaptcha?.ready(() => setCaptchaReady(true));
+      window.grecaptcha?.ready(() => {
+        setCaptchaReady(true);
+        setCaptchaStatus("Proteção reCAPTCHA carregada.");
+      });
     };
     script.onerror = () => {
       setErr("Não foi possível carregar o serviço reCAPTCHA. Atualize a página e tente novamente.");
+      setCaptchaStatus("Falha ao carregar o reCAPTCHA.");
     };
 
     document.head.appendChild(script);
@@ -73,7 +83,9 @@ export default function LoginPage() {
         if (!grecaptcha || !captchaReady) {
           throw new Error("Não foi possível validar o reCAPTCHA. Atualize a página e tente novamente.");
         }
+        setCaptchaStatus("Validando reCAPTCHA...");
         captchaToken = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "login" });
+        setCaptchaStatus("Proteção reCAPTCHA validada.");
       }
 
       await login({ email, senha, captchaToken });
@@ -82,6 +94,9 @@ export default function LoginPage() {
       const message =
         error?.response?.data?.message || error?.message || "Falha no login";
       setErr(message);
+      if (RECAPTCHA_SITE_KEY) {
+        setCaptchaStatus("Não foi possível validar o reCAPTCHA.");
+      }
     } finally {
       setLoading(false);
     }
@@ -137,6 +152,10 @@ export default function LoginPage() {
         >
           {loading ? "Entrando..." : "Entrar"}
         </button>
+
+        {captchaStatus && (
+          <p className="mt-3 text-center text-xs text-slate-500">{captchaStatus}</p>
+        )}
 
         {RECAPTCHA_SITE_KEY && (
           <p className="mt-4 text-center text-[11px] leading-relaxed text-slate-400">
