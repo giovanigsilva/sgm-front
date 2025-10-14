@@ -65,6 +65,38 @@ function onImgError(e) {
   img.onerror = null;
 }
 
+function ShareIcon({ type }) {
+  const common = "h-5 w-5";
+  switch (type) {
+    case "whatsapp":
+      return (
+        <svg className={common} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+          <path d="M20.52 3.48A11.87 11.87 0 0 0 12 0a12 12 0 0 0-10.3 17.86L0 24l6.3-1.65A12 12 0 0 0 12 24h.01A12 12 0 0 0 24 12a11.87 11.87 0 0 0-3.48-8.52ZM12 21.44a9.33 9.33 0 0 1-4.76-1.3l-.34-.2-3.74.98 1-3.64-.21-.37A9.38 9.38 0 1 1 12 21.44Zm5.16-7.11c-.28-.14-1.63-.8-1.88-.9s-.44-.14-.62.14-.71.9-.87 1.08-.32.2-.6.06a7.6 7.6 0 0 1-2.24-1.38 8.4 8.4 0 0 1-1.56-1.93c-.16-.28 0-.43.12-.57s.28-.32.42-.48.2-.28.3-.46a1.8 1.8 0 0 0 .12-.43.85.85 0 0 0-.12-.48c-.14-.14-.62-1.5-.85-2.05s-.46-.48-.62-.49h-.53a1 1 0 0 0-.72.34 3 3 0 0 0-.93 2.22 5.26 5.26 0 0 0 1.11 2.8 12 12 0 0 0 4.44 4.07 14.76 14.76 0 0 0 1.47.54 3.54 3.54 0 0 0 1.62.1 2.64 2.64 0 0 0 1.76-1.23 2.2 2.2 0 0 0 .15-1.23c-.07-.14-.26-.2-.53-.34Z" />
+        </svg>
+      );
+    case "facebook":
+      return (
+        <svg className={common} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+          <path d="M24 12.07A12 12 0 1 0 10.18 23.9v-8.36H7.11v-3.47h3.07V9.4c0-3 1.82-4.65 4.53-4.65a18.4 18.4 0 0 1 2.69.24v3H16c-1.46 0-1.9.91-1.9 1.84v2.22h3.24l-.52 3.47h-2.72V24A12.06 12.06 0 0 0 24 12.07Z" />
+        </svg>
+      );
+    case "x":
+      return (
+        <svg className={common} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+          <path d="M18.5 2h3.23l-7.06 8.07L22 22h-6.67l-4.36-5.69L5.78 22H2.55l7.52-8.59L2 2h6.8l3.94 5.19Zm-1.19 17.97h1.79L6.79 4.14H4.88Z" />
+        </svg>
+      );
+    case "linkedin":
+      return (
+        <svg className={common} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+          <path d="M20.45 20.45h-3.56v-5.33c0-1.27 0-2.9-1.76-2.9s-2 1.38-2 2.81v5.42H9.56V9h3.41v1.56h.05a3.75 3.75 0 0 1 3.38-1.85c3.62 0 4.29 2.38 4.29 5.48Zm-14.5-12A2.06 2.06 0 1 1 8 6.39a2.06 2.06 0 0 1-2.05 2.06Zm1.78 12H3.63V9h4.1ZM22.23 0H1.77A1.77 1.77 0 0 0 0 1.77v20.46A1.77 1.77 0 0 0 1.77 24h20.46A1.77 1.77 0 0 0 24 22.23V1.77A1.77 1.77 0 0 0 22.23 0Z" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
 export default function NoticiasPublicas() {
   const [searchParams, setSearchParams] = useSearchParams();
 
