@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { loginRequest } from "../api/auth";
 
 const AuthContext = createContext(null);
-const SHOULD_FAKE_LOGIN = String(import.meta.env.VITE_FAKE_RECAPTCHA_VALIDATION).toLowerCase() === "true";
 
 // ==== Helpers ====
 function parseJwt(token) {
@@ -80,23 +79,6 @@ export const AuthProvider = ({ children }) => {
 
   // Faz login e popula token + user (prioriza campos vindos da API)
   const login = async ({ email, senha, captchaToken }) => {
-    if (SHOULD_FAKE_LOGIN) {
-      const fakeToken = "fake-token";
-      const fakeUser = {
-        id: "00000000-0000-0000-0000-000000000000",
-        role: "Admin",
-        name: "Administrador Demo",
-        email,
-        isAdmin: true,
-      };
-
-      localStorage.setItem("token", fakeToken);
-      localStorage.setItem("user", JSON.stringify(fakeUser));
-      setToken(fakeToken);
-      setUser(fakeUser);
-      return;
-    }
-
     const res = await loginRequest(email, senha, captchaToken);
     // Esperado: { usuario, email, usuarioId?, role?, token }
     const p = parseJwt(res.token);
