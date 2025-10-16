@@ -1,7 +1,16 @@
 import axios from "axios";
 
+const buildBaseUrl = () => {
+  const envBase = import.meta.env.VITE_API_URL;
+  const fallback = "https://cnx-app-cadu-gev.azurewebsites.net/api";
+
+  const raw = (envBase && envBase.trim().length > 0 ? envBase : fallback).replace(/\/+$/, "");
+  if (raw.toLowerCase().endsWith("/api")) return raw;
+  return `${raw}/api`;
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL?.replace(/\/$/, "") || "https://cnx-app-cadu-gev.azurewebsites.net/api",
+  baseURL: buildBaseUrl(),
 });
 
 api.interceptors.request.use((config) => {
