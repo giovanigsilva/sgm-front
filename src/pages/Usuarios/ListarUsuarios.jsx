@@ -2,6 +2,26 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getUsuarios, deleteUsuario } from "../../api/usuarios";
 
+const normalizeUsuarios = (payload) => {
+  if (!payload) return [];
+  if (Array.isArray(payload)) return payload;
+
+  const candidates = [
+    payload.items,
+    payload.data,
+    payload.result,
+    payload.value,
+    payload.usuarios,
+    payload.users,
+  ];
+
+  for (const candidate of candidates) {
+    if (Array.isArray(candidate)) return candidate;
+  }
+
+  return [];
+};
+
 export default function ListarUsuarios() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,9 +31,24 @@ export default function ListarUsuarios() {
 
   useEffect(() => {
     (async () => {
-      try { setRows(await getUsuarios()); }
-      catch { setErr("Falha ao carregar usuários."); }
-      finally { setLoading(false); }
+      try {
+        const raw = await getUsuarios();
+        const list = normalizeUsuarios(raw);
+        if (!Array.isArray(list) || list.length === 0) {
+          setRows([]);
+          if (Array.isArray(list)) {
+            setErr("");
+          } else {
+            setErr("Nenhum usuário retornado pela API.");
+          }
+        } else {
+          setRows(list);
+        }
+      } catch {
+        setErr("Falha ao carregar usuários.");
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -57,9 +92,9 @@ export default function ListarUsuarios() {
         <tbody>
           {rows.map(u => (
             <tr key={u.id} className="border-t">
-              <td className="p-2">{u.nome}</td>
-              <td>{u.email}</td>
-              <td>{u.isAdmin ? "Sim" : "Não"}</td>
+              <td className="p-2">{u.nome ?? u.name ?? u.usuario ?? "—"}</td>
+              <td>{u.email ?? u.userEmail ?? "—"}</td>
+              <td>{u.isAdmin || u.admin ? "Sim" : "Não"}</td>
               <td className="text-right p-2 space-x-2">
                 <Link
                   to={`/usuarios/editar/${u.id}`}
